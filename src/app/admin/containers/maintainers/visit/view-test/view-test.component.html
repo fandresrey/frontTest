@@ -54,9 +54,52 @@
       </mat-form-field>
     </section>
 
+    <section *ngIf="hiden">
+      <mat-slide-toggle [(ngModel)]="checkName" (change)="check(1)">nombres</mat-slide-toggle>
+      <mat-slide-toggle [(ngModel)]="checkLast" (change)="check(2)">apellido</mat-slide-toggle>
+      <mat-slide-toggle [(ngModel)]="checkPhone" (change)="check(3)">telefono</mat-slide-toggle>
+      <mat-slide-toggle [(ngModel)]="checkAdress" (change)="check(4)">direccion</mat-slide-toggle>
+    </section>
+
+    <section *ngIf="hiden" style="align-items: center">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>nombre</th>
+          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef>apellido</th>
+          <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>telefono</th>
+          <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="adress">
+          <th mat-header-cell *matHeaderCellDef>direccion</th>
+          <td mat-cell *matCellDef="let element">{{ element.adress }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </section>
+
     <section>
       <div class="example-button-row">
-        <button mat-raised-button color="primary" (click)="save()" >Guardar</button>
+        <button mat-raised-button color="primary" (click)="save()">
+          Guardar
+        </button>
       </div>
     </section>
   </mat-card-content>

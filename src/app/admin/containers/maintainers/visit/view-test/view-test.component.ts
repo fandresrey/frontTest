@@ -16,18 +16,47 @@ export class ViewTestComponent implements OnInit {
   space: any = false
   other: any = false
   otherWord: any
+  dataSource: any
+  displayedColumns: any
+
+  checkName: any = true
+  checkLast: any = true
+  checkPhone: any = true
+  checkAdress: any = true
+
+
   arraySplit: any = []
+  arraySplittemp: any = []
+
+  elem = [
+    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+    { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+    { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+    { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+    { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+    { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+    { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+    { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+    { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+    { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+  ];
+  hiden: boolean = false;
+  array: string = "";
 
   constructor(private ServicesSave: SaveFileService,) { }
 
   ngOnInit(): void {
+    //  this.displayedColumns = ['name', 'lastName', 'phone', 'adress'];
+    // this.dataSource = this.elem;
   }
 
 
 
   onChange() { console.log("test"); }
   async handleFileInput(files: any) {
-
+    this.arraySplit = []
+    this.arraySplittemp = []
+    this.dataSource = []
 
     this.fileToUpload = files.target.files.item(0);
 
@@ -55,11 +84,11 @@ export class ViewTestComponent implements OnInit {
 
 
   splitVar() {
+    this.hiden = true
     console.log(this.filetest);
 
     var splitCol = this.filetest.split("\r\n")
 
-    console.log(splitCol);
 
     splitCol.forEach((element: any, index: any) => {
 
@@ -82,14 +111,6 @@ export class ViewTestComponent implements OnInit {
 
         var newElement = element.split(this.otherWord)
       }
-
-
-
-
-
-
-
-
       this.arraySplit.push({
         name: newElement[0],
         lastName: newElement[1],
@@ -97,15 +118,23 @@ export class ViewTestComponent implements OnInit {
         adress: newElement[3],
       })
 
-
-
     });
     console.log(this.arraySplit);
 
+    this.displayedColumns = ['name', 'lastName', 'phone', 'adress'];
+    this.dataSource = this.arraySplit
+    this.arraySplittemp = this.arraySplit
+    localStorage.removeItem('array')
+    localStorage.setItem('array', JSON.stringify(this.arraySplit));
+
+
   }
 
-
   onChangeDemo(e: any) {
+    this.arraySplit = []
+    this.arraySplittemp = []
+    this.dataSource = []
+
     switch (e) {
       case 1:
         if (this.dot) {
@@ -156,21 +185,109 @@ export class ViewTestComponent implements OnInit {
 
   }
 
+  check(e: any) {
+    console.log("tes");
 
+
+    switch (e) {
+      case 1:
+        if (this.checkName) {
+          this.array = String(localStorage.getItem('array'))
+          var arraySave = []
+          arraySave = JSON.parse(this.array)
+          arraySave.forEach((element: any, index: any) => {
+            this.arraySplit[index].name = element.name
+
+          });
+
+        } else {
+          this.array = String(localStorage.getItem('array'))
+          var arraySave = []
+          arraySave = JSON.parse(this.array)
+          arraySave.forEach((element: any, index: any) => {
+            console.log(element);
+            this.arraySplit[index].name = ""
+          });
+
+        }
+        break;
+      case 2:
+        if (this.checkLast) {
+          this.array = String(localStorage.getItem('array'))
+          var arraySave = []
+          arraySave = JSON.parse(this.array)
+          arraySave.forEach((element: any, index: any) => {
+            this.arraySplit[index].lastName = element.lastName
+
+          });
+
+        } else {
+          this.array = String(localStorage.getItem('array'))
+          var arraySave = []
+          arraySave = JSON.parse(this.array)
+          arraySave.forEach((element: any, index: any) => {
+            console.log(element);
+            this.arraySplit[index].lastName = ""
+          });
+
+        }
+        break;
+      case 3:
+        if (this.checkPhone) {
+          this.array = String(localStorage.getItem('array'))
+          var arraySave = []
+          arraySave = JSON.parse(this.array)
+          arraySave.forEach((element: any, index: any) => {
+            this.arraySplit[index].phone = element.phone
+
+          });
+
+        } else {
+          this.array = String(localStorage.getItem('array'))
+          var arraySave = []
+          arraySave = JSON.parse(this.array)
+          arraySave.forEach((element: any, index: any) => {
+            console.log(element);
+            this.arraySplit[index].phone = ""
+          });
+
+        }
+        break;
+      case 4:
+        if (this.checkAdress) {
+          this.array = String(localStorage.getItem('array'))
+          var arraySave = []
+          arraySave = JSON.parse(this.array)
+          arraySave.forEach((element: any, index: any) => {
+            this.arraySplit[index].adress = element.adress
+
+          });
+
+        } else {
+          this.array = String(localStorage.getItem('array'))
+          var arraySave = []
+          arraySave = JSON.parse(this.array)
+          arraySave.forEach((element: any, index: any) => {
+            console.log(element);
+            this.arraySplit[index].adress = ""
+          });
+
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    this.dataSource = this.arraySplit
+
+
+
+
+  }
 
   save() {
-
-    console.log("test");
-
-
-
-    console.log(this.arraySplit);
-
     try {
-
-
-
-
       this.ServicesSave.setCreate(
         this.arraySplit
       )
